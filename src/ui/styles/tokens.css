@@ -1,0 +1,97 @@
+/*
+ * Paleta i skala typograficzna (§5.1).
+ * Punkt odniesienia: barwniki i materiały sprzed epoki przemysłowej —
+ * nie neon i nie „fantasy z gry mobilnej".
+ *
+ * Uwaga o kontraście: barwniki z instrukcji zostają, ale nakładamy je
+ * mocniej. Wcześniejsze 10% krycia na polach planszy dawało ciemny granat
+ * na ciemnym granacie — pola były praktycznie niewidoczne.
+ */
+
+:root {
+  /* Blat: trzy stopnie, żeby plansza odcinała się od otoczenia. */
+  --sukno-mrok: #131b29; /* poza stołem, tło sceny          */
+  --sukno: #22314a; /* len farbowany indygo — blat stołu */
+  --sukno-jasne: #33455f;
+  --sukno-pole: #1a2437; /* wnętrze pola planszy            */
+
+  --kosc: #ece4d0; /* papier kart, tekst na suknie */
+  --kosc-cien: #c9bd9d;
+  --kosc-przygaszona: #8d8674;
+
+  --inkaust: #171c26; /* atrament żelazowo-galusowy — linie, typografia */
+  --mosiadz: #c2974c; /* zaopatrzenie, akcenty aktywne */
+  --mosiadz-jasny: #e0bb72;
+  --marzanna: #b04239; /* atak, straty */
+  --marzanna-jasna: #d96a5e;
+  --grynszpan: #568975; /* obrona, stany bezpieczne */
+  --grynszpan-jasny: #7fb39c;
+
+  /* Typografia — dwa kroje, oba self-hosted (kiosk działa offline). */
+  --font-tytul: 'Alegreya', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-ui: 'Archivo Narrow', 'Barlow Condensed', 'Roboto Condensed', 'Segoe UI', sans-serif;
+
+  --stopien-xs: 11px;
+  --stopien-s: 13px;
+  --stopien-m: 15px;
+  --stopien-l: 20px;
+  --stopien-xl: 29px;
+  --stopien-xxl: 46px;
+
+  /* Scena ma stałą proporcję 16:9 i jest skalowana do okna (§5). */
+  --scena-szer: 1600px;
+  --scena-wys: 900px;
+
+  /*
+   * Budżet pionowy sceny (900 px). Stałe są tylko trzy pasy:
+   *
+   *   28  odstępy zewnętrzne
+   *   42  pasek przeciwnika
+   *   20  dwie przerwy
+   *  234  ręka
+   *  ---
+   *  324  razem  →  na strefę gry zostaje 576
+   *
+   * Plansza mieści się w tym pasie: 16 (odstęp) + 4×128 + 16 (linia bitewna)
+   * + 4×6 (przerwy) = 568, zapas 8 px. Zmieniając --pole-bok albo którykolwiek
+   * z pasów wyżej, przelicz tę sumę — nie ma tu automatyki, która by to
+   * wyrównała, bo `aspect-ratio` zapętlało wymiarowanie z gridem.
+   */
+  --odstep-sceny: 14px;
+  --pasek-wys: 42px;
+  --reka-wys: 234px;
+  --panel-szer: 400px;
+  --stos-szer: 148px;
+
+  /* Wymiary z §8.2. Stałe — scena i tak skaluje się jako całość. */
+  --karta-szer: 150px;
+  --karta-wys: 210px;
+  --pole-bok: 128px;
+  --pole-przerwa: 6px;
+
+  --ramka: 1px solid rgba(23, 28, 38, 0.6);
+  --ramka-jasna: 1px solid rgba(236, 228, 208, 0.18);
+  --ramka-mocna: 1px solid rgba(236, 228, 208, 0.32);
+  --promien: 3px;
+
+  /* Czasy animacji — `prefers-reduced-motion` zeruje je niżej (§10.3). */
+  --czas-szybki: 180ms;
+  --czas-sredni: 320ms;
+  --czas-wolny: 600ms;
+  --stagger: 60ms;
+}
+
+/*
+ * Deklaracje @font-face siedzą w `public/assets/fonts/fonts.css`, wpiętym
+ * z index.html — tam adresy plików rozwiązują się względem katalogu fontów
+ * i działają pod dowolnym `base`. Tu zostaje sam stos zapasowy (wyżej).
+ */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --czas-szybki: 0ms;
+    --czas-sredni: 0ms;
+    --czas-wolny: 0ms;
+    --stagger: 0ms;
+  }
+}

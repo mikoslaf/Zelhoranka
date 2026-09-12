@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="750" height="1050" viewBox="0 0 750 1050">
+  <rect width="750" height="1050" fill="#22314A"/>
+  <rect x="40" y="40" width="670" height="970" fill="none" stroke="#ECE4D0"
+        stroke-opacity="0.35" stroke-width="4"/>
+  <circle cx="375" cy="525" r="150" fill="none" stroke="#568975" stroke-width="10"/>
+  <text x="375" y="545" font-family="serif" font-size="54" fill="#ECE4D0"
+        text-anchor="middle">Z</text>
+  <text x="375" y="960" font-family="sans-serif" font-size="24" fill="#ECE4D0"
+        fill-opacity="0.5" text-anchor="middle">INTERVENTION</text>
+</svg>

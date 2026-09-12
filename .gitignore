@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+.vite/
+coverage/
+*.local
+.DS_Store
+Thumbs.db
+paczka/
+zelhoranka-*.zip

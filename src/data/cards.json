@@ -1,0 +1,263 @@
+[
+  {
+    "id": "zelhorska_piechota",
+    "name": "Piechota zelhorska",
+    "type": "RECRUIT",
+    "offense": 3,
+    "defense": 5,
+    "cost": 2,
+    "zones": [
+      "MAIN"
+    ],
+    "attack": {
+      "offsets": [
+        0
+      ],
+      "reach": "FRONT",
+      "fromRear": false
+    },
+    "rules": [
+      "oslona"
+    ],
+    "text": "Mur tarcz, za którym stoi całe królestwo.",
+    "copies": 4,
+    "art": "cards/zelhorska_piechota.webp"
+  },
+  {
+    "id": "aranorscy_jezdzcy",
+    "name": "Aranorscy jeźdźcy",
+    "type": "RECRUIT",
+    "offense": 5,
+    "defense": 2,
+    "cost": 3,
+    "zones": [
+      "FLANK"
+    ],
+    "attack": {
+      "offsets": [
+        0,
+        -1,
+        1
+      ],
+      "reach": "DEEP",
+      "fromRear": false
+    },
+    "rules": [
+      "szarza"
+    ],
+    "text": "Uderzają tam, gdzie linia jest najcieńsza.",
+    "copies": 3,
+    "art": "cards/aranorscy_jezdzcy.webp"
+  },
+  {
+    "id": "desilvarscy_lucznicy",
+    "name": "Łucznicy desilvarscy",
+    "type": "RECRUIT",
+    "offense": 3,
+    "defense": 2,
+    "cost": 2,
+    "zones": [
+      "REAR"
+    ],
+    "attack": {
+      "offsets": [
+        0,
+        -1,
+        1
+      ],
+      "reach": "RANGED",
+      "fromRear": true
+    },
+    "rules": [
+      "ostrzal"
+    ],
+    "text": "Strzała nie pyta, gdzie kończy się pierwsza linia.",
+    "copies": 3,
+    "art": "cards/desilvarscy_lucznicy.webp"
+  },
+  {
+    "id": "gwardia_zelhoru",
+    "name": "Gwardia Zelhoru",
+    "type": "RECRUIT",
+    "offense": 4,
+    "defense": 6,
+    "cost": 4,
+    "zones": [
+      "MAIN",
+      "FLANK"
+    ],
+    "attack": {
+      "offsets": [
+        0
+      ],
+      "reach": "FRONT",
+      "fromRear": false
+    },
+    "rules": [
+      "niezlomnosc"
+    ],
+    "text": "Padają ostatni i nigdy za pierwszym razem.",
+    "copies": 2,
+    "art": "cards/gwardia_zelhoru.webp"
+  },
+  {
+    "id": "zwiadowcy_desilvaru",
+    "name": "Zwiadowcy Desilvaru",
+    "type": "RECRUIT",
+    "offense": 2,
+    "defense": 2,
+    "cost": 1,
+    "zones": [
+      "FLANK",
+      "REAR"
+    ],
+    "attack": {
+      "offsets": [
+        0,
+        -1,
+        1
+      ],
+      "reach": "FRONT",
+      "fromRear": false
+    },
+    "rules": [
+      "zwiadowca"
+    ],
+    "text": "Meldunek przychodzi w porę, żeby zmienić rozkaz.",
+    "copies": 2,
+    "art": "cards/zwiadowcy_desilvaru.webp"
+  },
+  {
+    "id": "kwatermistrz_taboru",
+    "name": "Kwatermistrz taboru",
+    "type": "RECRUIT",
+    "offense": 1,
+    "defense": 3,
+    "cost": 1,
+    "zones": [
+      "REAR"
+    ],
+    "attack": {
+      "offsets": [
+        0
+      ],
+      "reach": "FRONT",
+      "fromRear": false
+    },
+    "rules": [
+      "zaopatrzeniowiec"
+    ],
+    "text": "Liczy worki owsa, a wygrywa nimi bitwy.",
+    "copies": 2,
+    "art": "cards/kwatermistrz_taboru.webp"
+  },
+  {
+    "id": "tabor_prowiantowy",
+    "name": "Tabor prowiantowy",
+    "type": "SUPPLY",
+    "supply": 2,
+    "rules": [],
+    "text": "Dwa punkty zaopatrzenia. Odrzuć po zapłacie.",
+    "copies": 6,
+    "art": "cards/tabor_prowiantowy.webp"
+  },
+  {
+    "id": "podwoda_wiejska",
+    "name": "Podwoda wiejska",
+    "type": "SUPPLY",
+    "supply": 1,
+    "rules": [],
+    "text": "Jeden punkt zaopatrzenia i skrzypiąca oś.",
+    "copies": 4,
+    "art": "cards/podwoda_wiejska.webp"
+  },
+  {
+    "id": "skarbiec_polowy",
+    "name": "Skarbiec polowy",
+    "type": "SUPPLY",
+    "supply": 3,
+    "rules": [],
+    "text": "Trzy punkty zaopatrzenia. Żołd rozwiązuje wiele problemów.",
+    "copies": 2,
+    "art": "cards/skarbiec_polowy.webp"
+  },
+  {
+    "id": "wilczy_dol",
+    "name": "Wilczy dół",
+    "type": "AMBUSH",
+    "trigger": "ENEMY_DEPLOYED",
+    "cost": 1,
+    "rules": [],
+    "text": "Gdy przeciwnik rozmieści oddział — ten oddział ma defensywę -2 do końca partii.",
+    "copies": 2,
+    "art": "cards/wilczy_dol.webp"
+  },
+  {
+    "id": "zasadzka_w_jarze",
+    "name": "Zasadzka w jarze",
+    "type": "AMBUSH",
+    "trigger": "ORDERS_REVEALED",
+    "cost": 1,
+    "rules": [],
+    "text": "Po odkryciu rozkazów: jeden atakujący oddział przeciwnika ma ofensywę -3 w tej turze.",
+    "copies": 2,
+    "art": "cards/zasadzka_w_jarze.webp"
+  },
+  {
+    "id": "rozkaz_krolewski",
+    "name": "Rozkaz królewski",
+    "type": "INTERVENTION",
+    "requirements": [
+      "PHASE_LOGISTICS",
+      "HAND_BELOW_MAX"
+    ],
+    "effect": "draw_two",
+    "rules": [],
+    "text": "Dobierz dwie karty. Pieczęć otwiera każde wrota.",
+    "copies": 2,
+    "art": "cards/rozkaz_krolewski.webp"
+  },
+  {
+    "id": "zwrot_taboru",
+    "name": "Zwrot taboru",
+    "type": "INTERVENTION",
+    "requirements": [
+      "PHASE_LOGISTICS"
+    ],
+    "effect": "supply_over_limit",
+    "rules": [],
+    "text": "Otrzymujesz 2 punkty zaopatrzenia ponad limit tury.",
+    "copies": 2,
+    "art": "cards/zwrot_taboru.webp"
+  },
+  {
+    "id": "falszywy_rozkaz",
+    "name": "Fałszywy rozkaz",
+    "type": "MANEUVER",
+    "effect": "retarget_one",
+    "rules": [],
+    "text": "Przekieruj atak jednego własnego oddziału na inny cel w jego zasięgu.",
+    "copies": 2,
+    "art": "cards/falszywy_rozkaz.webp"
+  },
+  {
+    "id": "odwrot_w_szyku",
+    "name": "Odwrót w szyku",
+    "type": "MANEUVER",
+    "effect": "to_defend",
+    "rules": [],
+    "text": "Zmień rozkaz jednego własnego oddziału na obronę.",
+    "copies": 1,
+    "art": "cards/odwrot_w_szyku.webp"
+  },
+  {
+    "id": "sygnal_do_natarcia",
+    "name": "Sygnał do natarcia",
+    "type": "MANEUVER",
+    "effect": "buff_offense",
+    "rules": [],
+    "text": "Jeden własny oddział ma ofensywę +3 w tej turze.",
+    "copies": 1,
+    "art": "cards/sygnal_do_natarcia.webp"
+  }
+]

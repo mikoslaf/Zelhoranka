@@ -1,0 +1,45 @@
+/*
+ * Kroje self-hosted (§5.1). Ten plik leży w `public/`, więc Vite kopiuje go
+ * bez przetwarzania — adresy niżej rozwiązują się względem TEGO katalogu,
+ * a nie względem korzenia serwera. Dzięki temu działa tak samo w `vite dev`,
+ * w buildzie i po otwarciu z podkatalogu w kiosku.
+ *
+ * Plików .woff2 jeszcze tu nie ma. Brak pliku = @font-face po cichu przepada,
+ * a stos zapasowy z tokens.css podstawia krój systemowy. Wrzucenie plików
+ * do tego katalogu włącza właściwą typografię bez zmian w kodzie:
+ *
+ *   Alegreya-Regular.woff2, Alegreya-Bold.woff2
+ *   ArchivoNarrow-Regular.woff2, ArchivoNarrow-Bold.woff2
+ */
+
+@font-face {
+  font-family: 'Alegreya';
+  src: url('Alegreya-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alegreya';
+  src: url('Alegreya-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Archivo Narrow';
+  src: url('ArchivoNarrow-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Archivo Narrow';
+  src: url('ArchivoNarrow-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

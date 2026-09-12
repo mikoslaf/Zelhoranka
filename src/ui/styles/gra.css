@@ -1,0 +1,1569 @@
+@import './tokens.css';
+
+/* ---------- Podstawa / kiosk (§10.4) ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* kiosk: brak przewijania */
+  background: var(--sukno-mrok);
+  color: var(--kosc);
+  font-family: var(--font-ui);
+  font-size: var(--stopien-m);
+  -webkit-font-smoothing: antialiased;
+}
+
+body,
+button,
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+img {
+  pointer-events: none;
+  max-width: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+button {
+  font-family: var(--font-ui);
+  font-size: var(--stopien-m);
+  color: var(--kosc);
+  background: rgba(236, 228, 208, 0.04);
+  border: var(--ramka-mocna);
+  border-radius: var(--promien);
+  padding: 10px 18px;
+  min-height: 44px; /* duże cele kliknięcia (§10.4) */
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background var(--czas-szybki), border-color var(--czas-szybki),
+    color var(--czas-szybki);
+}
+
+button:hover:not(:disabled) {
+  background: rgba(236, 228, 208, 0.11);
+  border-color: var(--mosiadz);
+  color: var(--kosc);
+}
+
+button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+button.glowny {
+  background: var(--mosiadz);
+  border-color: var(--mosiadz-jasny);
+  color: var(--inkaust);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+button.glowny:hover:not(:disabled) {
+  background: var(--mosiadz-jasny);
+  color: var(--inkaust);
+}
+
+button.zagrozenie {
+  border-color: var(--marzanna);
+  color: var(--marzanna-jasna);
+}
+
+/* ---------- Scena: stała proporcja 16:9, skalowana do okna (§5) ---------- */
+
+.scena-kontener {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--sukno-mrok);
+}
+
+/*
+ * Ramka ma wymiary JUŻ przeskalowane, więc zajmuje w układzie dokładnie tyle,
+ * ile widać. Dzięki temu centrowanie flexem jest ścisłe, a listwy po bokach
+ * (albo nad i pod) pojawiają się same, gdy proporcja okna nie jest 16:9.
+ */
+.scena-ramka {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.scena {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--scena-szer);
+  height: var(--scena-wys);
+  /* Skalowanie od rogu, nie od środka — inaczej ramka i scena się rozjeżdżają. */
+  transform-origin: top left;
+  overflow: hidden;
+  background: var(--sukno-mrok);
+  background-image:
+    radial-gradient(ellipse 62% 76% at 41% 52%, var(--sukno) 0%, transparent 72%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.07) 0 2px,
+      transparent 2px 5px
+    );
+}
+
+.scena.z-tlem {
+  background-size: cover;
+  background-position: center;
+}
+
+/* ---------- Ekran gry ---------- */
+
+.ekran-gry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--panel-szer);
+  gap: 18px;
+  height: 100%;
+  padding: var(--odstep-sceny) 20px;
+}
+
+/*
+ * Trzy pasy o policzonej wysokości. `minmax(0, …)` na środkowym jest istotne:
+ * bez tego ścieżka `1fr` nie schodzi poniżej swojej zawartości i cała kolumna
+ * wypycha rękę poza scenę.
+ */
+.kolumna-stolu {
+  display: grid;
+  grid-template-rows: var(--pasek-wys) minmax(0, 1fr) var(--reka-wys);
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ---------- Pasek przeciwnika ---------- */
+
+.pasek-przeciwnika {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  border: var(--ramka-jasna);
+  border-radius: var(--promien);
+  background: rgba(19, 27, 41, 0.55);
+  overflow: hidden;
+}
+
+.pasek-przeciwnika .etykieta {
+  font-size: var(--stopien-s);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kosc-cien);
+  white-space: nowrap;
+}
+
+.pasek-przeciwnika .stan {
+  font-size: var(--stopien-s);
+  color: var(--kosc-przygaszona);
+  white-space: nowrap;
+}
+
+.pasek-przeciwnika .stan.pilne {
+  color: var(--mosiadz-jasny);
+}
+
+/*
+ * Jawna ręka przeciwnika. Po przejściu na pełną informację rewersy straciły
+ * sens — gracz musi widzieć, czym przeciwnik dysponuje, żeby móc pod to grać.
+ */
+.reka-jawna {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.mini-karta {
+  flex: 0 0 auto;
+  font-size: var(--stopien-xs);
+  line-height: 1.1;
+  padding: 4px 7px;
+  border-radius: 2px;
+  border: 1px solid rgba(236, 228, 208, 0.25);
+  color: var(--kosc);
+  white-space: nowrap;
+  max-width: 118px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-karta.typ-RECRUIT {
+  background: rgba(176, 66, 57, 0.4);
+  border-color: rgba(217, 106, 94, 0.5);
+}
+
+.mini-karta.typ-SUPPLY {
+  background: rgba(194, 151, 76, 0.35);
+  border-color: rgba(224, 187, 114, 0.5);
+}
+
+.mini-karta.typ-AMBUSH {
+  background: rgba(23, 28, 38, 0.7);
+}
+
+.mini-karta.typ-INTERVENTION {
+  background: rgba(86, 137, 117, 0.38);
+  border-color: rgba(127, 179, 156, 0.5);
+}
+
+.mini-karta.typ-MANEUVER {
+  background: rgba(51, 69, 95, 0.6);
+}
+
+/* ---------- Strefa gry: stosy | plansza | stosy ---------- */
+
+.strefa-gry {
+  display: grid;
+  grid-template-columns: var(--stos-szer) auto var(--stos-szer);
+  gap: 22px;
+  justify-content: center;
+  align-items: stretch;
+  min-height: 0;
+}
+
+/* ---------- Stosy kart obok stołu ---------- */
+
+.stosy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.stosy .naglowek-stosow {
+  font-size: var(--stopien-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kosc-cien);
+  padding-bottom: 2px;
+  border-bottom: var(--ramka-jasna);
+}
+
+.stos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border: var(--ramka-jasna);
+  border-radius: var(--promien);
+  background: rgba(19, 27, 41, 0.5);
+}
+
+.stos .plecek {
+  width: 26px;
+  height: 36px;
+  flex: 0 0 auto;
+  border-radius: 2px;
+  border: 1px solid rgba(236, 228, 208, 0.25);
+  background: repeating-linear-gradient(
+      135deg,
+      rgba(236, 228, 208, 0.14) 0 2px,
+      transparent 2px 5px
+    ),
+    var(--sukno-mrok);
+}
+
+.stos .plecek.pusty {
+  border-style: dashed;
+  background: none;
+  opacity: 0.4;
+}
+
+.stos .plecek.odrzucone {
+  background: repeating-linear-gradient(
+      135deg,
+      rgba(176, 66, 57, 0.22) 0 2px,
+      transparent 2px 5px
+    ),
+    var(--sukno-mrok);
+}
+
+.stos .plecek.zasadzki {
+  background: repeating-linear-gradient(
+      135deg,
+      rgba(194, 151, 76, 0.24) 0 2px,
+      transparent 2px 5px
+    ),
+    var(--sukno-mrok);
+}
+
+.stos .opis-stosu {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.stos .wartosc {
+  font-size: var(--stopien-l);
+  font-weight: 700;
+  color: var(--kosc);
+}
+
+.stos .opis {
+  font-size: var(--stopien-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--kosc-przygaszona);
+}
+
+/* ---------- Plansza ---------- */
+
+.plansza {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pole-przerwa);
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 5px;
+  /* Blat odcięty od otoczenia — inaczej plansza ginie w suknie. */
+  background: rgba(11, 16, 26, 0.5);
+  box-shadow:
+    inset 0 0 0 1px rgba(236, 228, 208, 0.12),
+    inset 0 0 70px rgba(0, 0, 0, 0.35);
+}
+
+.rzad {
+  display: flex;
+  gap: var(--pole-przerwa);
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+/*
+ * Komórka ma STAŁY bok. Wersja z `aspect-ratio` liczonym od wysokości
+ * procentowej tworzyła zapętlenie: grid musi znać szerokość kolumny, zanim
+ * ustali wysokość wiersza, więc kolumna zapadała się do zera, a plansza
+ * rozlewała się na sąsiednie kolumny ze stosami.
+ *
+ * Scena ma zawsze dokładnie 1600×900 (skaluje się dopiero jako całość), więc
+ * stałe piksele są tu deterministyczne. Budżet pionowy: patrz tokens.css.
+ */
+.komorka {
+  flex: 0 0 auto;
+  width: var(--pole-bok);
+  height: var(--pole-bok);
+}
+
+/* Skrajne kolumny lekko odsunięte, żeby podział linii był czytelny (§5). */
+.rzad > *:first-child {
+  margin-right: 12px;
+}
+
+.rzad > *:last-child {
+  margin-left: 12px;
+}
+
+.linia-bitewna {
+  width: 100%;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 2px 0;
+  font-family: var(--font-tytul);
+  font-size: 10px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--mosiadz-jasny);
+}
+
+.linia-bitewna::before,
+.linia-bitewna::after {
+  content: '';
+  flex: 1;
+  height: 4px;
+  border-top: 1px solid rgba(224, 187, 114, 0.7);
+  border-bottom: 1px solid rgba(224, 187, 114, 0.7);
+}
+
+/* ---------- Pole ---------- */
+
+.pole {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 0;
+  display: block;
+  border-radius: var(--promien);
+  background-color: var(--sukno-pole);
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.35);
+  transition: border-color var(--czas-szybki), box-shadow var(--czas-szybki),
+    transform var(--czas-szybki);
+}
+
+/* Strefy różnią się graficznie, nie tylko podpisem (§5). */
+.pole.strefa-MAIN {
+  border: 2px solid rgba(127, 179, 156, 0.85);
+}
+
+.pole.strefa-FLANK {
+  border: 2px dashed rgba(224, 187, 114, 0.85);
+}
+
+.pole.strefa-REAR {
+  border: 2px solid rgba(180, 196, 224, 0.45);
+}
+
+.pole .etykieta-pola {
+  position: absolute;
+  top: 5px;
+  left: 7px;
+  font-size: var(--stopien-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--kosc);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.pole .nazwa-strefy {
+  position: absolute;
+  bottom: 7px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--kosc);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.pole.dostepne {
+  border-color: var(--mosiadz-jasny);
+  box-shadow:
+    inset 0 1px 6px rgba(0, 0, 0, 0.3),
+    0 0 0 3px rgba(194, 151, 76, 0.42);
+  cursor: pointer;
+}
+
+.pole.cel {
+  border-color: var(--marzanna-jasna);
+  box-shadow:
+    inset 0 1px 6px rgba(0, 0, 0, 0.3),
+    0 0 0 3px rgba(217, 106, 94, 0.45);
+  cursor: pointer;
+}
+
+.pole.zaznaczone {
+  border-color: var(--kosc);
+  box-shadow:
+    inset 0 1px 6px rgba(0, 0, 0, 0.3),
+    0 0 0 3px rgba(236, 228, 208, 0.55);
+}
+
+.pole:disabled {
+  cursor: default;
+}
+
+/* ---------- Żeton jednostki ---------- */
+
+.zeton {
+  position: absolute;
+  inset: 4px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  border-radius: 2px;
+  border: 1px solid rgba(23, 28, 38, 0.85);
+  background: var(--kosc);
+  color: var(--inkaust);
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  animation: zeton-wejscie var(--czas-sredni) ease-out;
+}
+
+.zeton.wrogi {
+  background: var(--kosc-cien);
+}
+
+.zeton .ilustracja {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.zeton .nazwa {
+  position: relative;
+  font-family: var(--font-tytul);
+  font-size: var(--stopien-xs);
+  font-weight: 700;
+  line-height: 1.1;
+  padding: 4px 4px 3px;
+  text-align: center;
+  background: rgba(236, 228, 208, 0.93);
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zeton .symbole {
+  position: relative;
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 3px;
+}
+
+.zeton .statystyki {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 4px;
+  background: rgba(236, 228, 208, 0.93);
+}
+
+.stat {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: var(--stopien-m);
+  min-width: 26px;
+  text-align: center;
+  padding: 1px 5px;
+  border-radius: 2px;
+  line-height: 1.15;
+}
+
+.stat.ofn {
+  background: var(--marzanna);
+  color: var(--kosc);
+}
+
+.stat.def {
+  background: var(--grynszpan);
+  color: var(--kosc);
+}
+
+.stat.zmodyfikowany {
+  outline: 2px solid var(--mosiadz);
+  outline-offset: -1px;
+}
+
+.zeton.martwy {
+  animation: zeton-smierc var(--czas-wolny) ease-in forwards;
+}
+
+/* Znacznik rozkazu w rogu żetonu */
+.znacznik-rozkazu {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  z-index: 3;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: var(--stopien-xs);
+  font-weight: 700;
+  border: 1px solid rgba(23, 28, 38, 0.7);
+}
+
+.znacznik-rozkazu.ATTACK {
+  background: var(--marzanna);
+  color: var(--kosc);
+}
+
+.znacznik-rozkazu.DEFEND {
+  background: var(--grynszpan);
+  color: var(--kosc);
+}
+
+.znacznik-rozkazu.NONE {
+  background: rgba(23, 28, 38, 0.3);
+  color: var(--inkaust);
+}
+
+/* ---------- Strzałki ataków ---------- */
+
+.warstwa-strzalek {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.strzalka {
+  stroke: var(--marzanna-jasna);
+  stroke-width: 3;
+  fill: none;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: strzalka-rysuj var(--czas-wolny) ease-out forwards;
+}
+
+.strzalka.wroga {
+  stroke: var(--mosiadz-jasny);
+}
+
+.strzalka-grot {
+  fill: var(--marzanna-jasna);
+}
+
+.strzalka-grot.wroga {
+  fill: var(--mosiadz-jasny);
+}
+
+/* ---------- Liczby obrażeń ---------- */
+
+.dymek-obrazen {
+  position: absolute;
+  z-index: 6;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: var(--stopien-l);
+  color: var(--marzanna-jasna);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  animation: dymek var(--czas-wolny) ease-out forwards;
+}
+
+/* ---------- Ręka ---------- */
+
+.reka {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+
+.reka .naglowek {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: var(--stopien-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kosc-cien);
+  flex: 0 0 auto;
+}
+
+.reka .karty {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0 4px;
+}
+
+.reka .karty {
+  gap: 10px;
+}
+
+/*
+ * Zachodzenie włącza się dopiero przy pełnej ręce: osiem kart po 150 px nie
+ * mieści się obok siebie w kolumnie stołu. Przy mniejszej ręce karty stoją
+ * osobno, bo nachodząca sąsiadka zasłaniałaby prawą krawędź tekstu.
+ */
+.reka .karty.ciasno {
+  gap: 0;
+}
+
+.reka .karty.ciasno > * + * {
+  margin-left: -14px;
+}
+
+.reka .karty > *:hover,
+.reka .karty > *:focus-visible {
+  z-index: 10;
+}
+
+/* ---------- Karta ---------- */
+
+.karta {
+  width: var(--karta-szer);
+  height: var(--karta-wys);
+  flex: 0 0 auto;
+  position: relative;
+  padding: 0;
+  border: 1px solid var(--inkaust);
+  border-radius: var(--promien);
+  background: var(--kosc);
+  color: var(--inkaust);
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  transition: transform var(--czas-szybki), box-shadow var(--czas-szybki);
+  cursor: pointer;
+  text-align: left;
+}
+
+.karta:hover:not(:disabled) {
+  position: relative;
+  z-index: 10;
+  transform: translateY(-9px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.55);
+  background: var(--kosc);
+  border-color: var(--mosiadz);
+}
+
+.karta.wybrana {
+  position: relative;
+  z-index: 11;
+  transform: translateY(-14px);
+  box-shadow:
+    0 0 0 3px var(--mosiadz),
+    0 12px 24px rgba(0, 0, 0, 0.55);
+}
+
+.karta.niegrywalna {
+  opacity: 0.4;
+  cursor: default;
+  filter: saturate(0.5);
+}
+
+.karta.zaznaczona-do-wymiany {
+  box-shadow:
+    0 0 0 3px var(--marzanna-jasna),
+    0 8px 18px rgba(0, 0, 0, 0.5);
+  transform: translateY(-7px);
+}
+
+.karta .ilustracja {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+/*
+ * Pas górny musi pomieścić pełne nazwy w rodzaju „Kwatermistrz taboru"
+ * — stąd dwa wiersze i zawijanie zamiast ucinania wielokropkiem.
+ */
+.karta .pas-gorny {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 5px 7px;
+  min-height: 38px;
+  background: var(--inkaust);
+  color: var(--kosc);
+}
+
+.karta .pas-gorny .nazwa {
+  font-family: var(--font-tytul);
+  font-size: var(--stopien-s);
+  font-weight: 700;
+  line-height: 1.12;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.karta .koszt {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--mosiadz);
+  color: var(--inkaust);
+  font-weight: 700;
+  font-size: var(--stopien-s);
+  flex: 0 0 auto;
+}
+
+.karta .pole-ilustracji {
+  position: relative;
+  overflow: hidden;
+}
+
+.karta .typ {
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--kosc);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
+}
+
+.karta .tekst {
+  position: relative;
+  z-index: 2;
+  padding: 5px 7px;
+  font-family: var(--font-tytul);
+  font-size: var(--stopien-xs);
+  line-height: 1.25;
+  min-height: 44px;
+  background: rgba(236, 228, 208, 0.95);
+}
+
+.karta .pas-dolny {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 4px 7px;
+  background: var(--inkaust);
+  min-height: 34px;
+}
+
+.karta .symbole {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+  justify-content: center;
+}
+
+.karta .wartosc-zaopatrzenia {
+  font-weight: 700;
+  color: var(--mosiadz-jasny);
+  font-size: var(--stopien-l);
+  width: 100%;
+  text-align: center;
+  line-height: 1;
+}
+
+.karta .etykieta-typu {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--kosc-cien);
+}
+
+/* ---------- Symbol reguły ---------- */
+
+.symbol {
+  width: 19px;
+  height: 19px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--mosiadz-jasny);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex: 0 0 auto;
+}
+
+.zeton .symbol {
+  width: 16px;
+  height: 16px;
+  color: var(--inkaust);
+  background-color: rgba(236, 228, 208, 0.9);
+  font-size: 9px;
+}
+
+/* ---------- Panel boczny ---------- */
+
+.panel {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 12px;
+  min-height: 0;
+}
+
+.kaseta {
+  border: var(--ramka-jasna);
+  border-radius: var(--promien);
+  background: rgba(19, 27, 41, 0.55);
+  padding: 12px 16px;
+  min-width: 0;
+}
+
+.kaseta .tytul-kasety {
+  font-size: var(--stopien-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--kosc-cien);
+  margin-bottom: 8px;
+}
+
+.kaseta .naglowek-tury {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.kaseta .tura {
+  font-family: var(--font-tytul);
+  font-size: var(--stopien-l);
+  line-height: 1;
+  color: var(--kosc-cien);
+}
+
+.kaseta .faza {
+  font-family: var(--font-tytul);
+  font-size: var(--stopien-xl);
+  color: var(--mosiadz-jasny);
+  line-height: 1.1;
+}
+
+.kaseta .opis-fazy {
+  font-size: var(--stopien-s);
+  color: var(--kosc-przygaszona);
+  line-height: 1.4;
+  margin-top: 5px;
+}
+
+.kaseta .kto-zaczyna {
+  font-size: var(--stopien-s);
+  color: var(--kosc-cien);
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: var(--ramka-jasna);
+}
+
+/* Zaopatrzenie i przełamanie — dwa osobne, czytelne wiersze. */
+.miernik {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.miernik + .miernik {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: var(--ramka-jasna);
+}
+
+.miernik .etykieta-miernika {
+  font-size: var(--stopien-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kosc-przygaszona);
+}
+
+.miernik .duza-liczba {
+  font-size: var(--stopien-l);
+  font-weight: 700;
+  color: var(--mosiadz-jasny);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.miernik .duza-liczba .drobna {
+  font-size: var(--stopien-s);
+  color: var(--kosc-przygaszona);
+  font-weight: 400;
+}
+
+.koraliki {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 7px;
+}
+
+.koralik {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid var(--mosiadz);
+}
+
+.koralik.pelny {
+  background: var(--mosiadz);
+}
+
+.koralik.wydany {
+  background: rgba(194, 151, 76, 0.22);
+  border-style: dashed;
+}
+
+.pasek-przelamania {
+  height: 7px;
+  margin-top: 7px;
+  border: 1px solid rgba(236, 228, 208, 0.22);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pasek-przelamania .wypelnienie {
+  height: 100%;
+  background: var(--marzanna);
+  transition: width var(--czas-sredni) ease-out;
+}
+
+.pasek-przelamania .wypelnienie.blisko {
+  background: var(--mosiadz);
+}
+
+/* ---------- Dziennik ---------- */
+
+.dziennik {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.dziennik .wpisy {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-right: 8px;
+  font-size: var(--stopien-s);
+  line-height: 1.35;
+  color: var(--kosc-cien);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(236, 228, 208, 0.25) transparent;
+}
+
+.dziennik .wpisy::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dziennik .wpisy::-webkit-scrollbar-thumb {
+  background: rgba(236, 228, 208, 0.25);
+  border-radius: 3px;
+}
+
+.dziennik .pusty {
+  color: var(--kosc-przygaszona);
+  font-style: italic;
+}
+
+.wpis {
+  display: flex;
+  gap: 8px;
+  animation: wpis-wejscie var(--czas-szybki) ease-out;
+}
+
+.wpis .znacznik {
+  flex: 0 0 auto;
+  width: 3px;
+  border-radius: 2px;
+  background: rgba(236, 228, 208, 0.22);
+}
+
+.wpis.P1 .znacznik {
+  background: var(--grynszpan-jasny);
+}
+
+.wpis.P2 .znacznik {
+  background: var(--marzanna-jasna);
+}
+
+.wpis .tresc {
+  min-width: 0;
+}
+
+.wpis .autor {
+  color: var(--kosc);
+  font-weight: 700;
+}
+
+/* ---------- Akcje ---------- */
+
+.akcje {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.akcje .rzad-przyciskow {
+  display: flex;
+  gap: 8px;
+}
+
+.akcje .rzad-przyciskow button {
+  flex: 1;
+}
+
+.podpowiedz {
+  font-size: var(--stopien-s);
+  line-height: 1.4;
+  color: var(--kosc-cien);
+  min-height: 20px;
+}
+
+.podpowiedz.blad {
+  color: var(--marzanna-jasna);
+  animation: potrzasnij var(--czas-sredni) ease-out;
+}
+
+.podpowiedz.zwiad {
+  color: var(--mosiadz-jasny);
+}
+
+/* ---------- Menu ---------- */
+
+.menu {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: 56px;
+  padding: 60px 84px;
+}
+
+.menu .tytul {
+  font-family: var(--font-tytul);
+  font-size: 88px;
+  line-height: 0.95;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.menu .podtytul {
+  font-family: var(--font-tytul);
+  font-size: var(--stopien-l);
+  color: var(--kosc-cien);
+  margin: 12px 0 26px;
+}
+
+.menu .opis {
+  max-width: 520px;
+  line-height: 1.6;
+  color: var(--kosc-cien);
+  font-size: var(--stopien-m);
+  margin: 0;
+}
+
+.menu .przyciski {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 30px;
+  max-width: 340px;
+}
+
+.ustawienia {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 24px;
+  border: var(--ramka-jasna);
+  border-radius: var(--promien);
+  background: rgba(19, 27, 41, 0.5);
+}
+
+.ustawienie {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ustawienie .etykieta {
+  font-size: var(--stopien-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kosc-cien);
+}
+
+.ustawienie .opis-male {
+  font-size: var(--stopien-xs);
+  color: var(--kosc-przygaszona);
+  line-height: 1.4;
+}
+
+.przelacznik {
+  display: flex;
+  gap: 6px;
+}
+
+.przelacznik button {
+  flex: 1;
+  min-height: 40px;
+  font-size: var(--stopien-s);
+  padding: 8px 10px;
+}
+
+.przelacznik button.aktywny {
+  background: var(--mosiadz);
+  border-color: var(--mosiadz-jasny);
+  color: var(--inkaust);
+  font-weight: 700;
+}
+
+input[type='range'] {
+  width: 100%;
+  accent-color: var(--mosiadz);
+}
+
+input[type='number'],
+input[type='text'] {
+  background: rgba(19, 27, 41, 0.7);
+  border: var(--ramka-mocna);
+  border-radius: var(--promien);
+  color: var(--kosc);
+  font-family: var(--font-ui);
+  font-size: var(--stopien-m);
+  padding: 9px 12px;
+  min-height: 44px;
+  width: 100%;
+}
+
+.pasek-postepu {
+  height: 6px;
+  border: var(--ramka-jasna);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.pasek-postepu .wypelnienie {
+  height: 100%;
+  background: var(--mosiadz);
+  transition: width var(--czas-szybki) linear;
+}
+
+/* ---------- Kostka ---------- */
+
+.kostka-ekran {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 28px;
+  background: rgba(19, 27, 41, 0.97);
+  text-align: center;
+}
+
+.kostki {
+  display: flex;
+  gap: 56px;
+  align-items: flex-start;
+}
+
+.kostka {
+  width: 96px;
+  height: 96px;
+  border-radius: 10px;
+  background: var(--kosc);
+  color: var(--inkaust);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  padding: 12px;
+  border: 2px solid var(--inkaust);
+}
+
+.kostka.turla {
+  animation: kostka-turla var(--czas-wolny) linear infinite;
+}
+
+.oczko {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--inkaust);
+  place-self: center;
+}
+
+.kostka-podpis {
+  font-size: var(--stopien-s);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--kosc-przygaszona);
+  margin-top: 10px;
+}
+
+/* ---------- Podsumowanie ---------- */
+
+.podsumowanie {
+  height: 100%;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 20px;
+  text-align: center;
+  padding: 40px;
+}
+
+.podsumowanie .werdykt {
+  font-family: var(--font-tytul);
+  font-size: 72px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.podsumowanie .werdykt.zwyciestwo {
+  color: var(--mosiadz-jasny);
+}
+
+.podsumowanie .werdykt.remis {
+  color: var(--kosc-cien);
+}
+
+.podsumowanie .powod {
+  font-size: var(--stopien-l);
+  color: var(--kosc-cien);
+  max-width: 680px;
+  line-height: 1.45;
+}
+
+.podsumowanie .statystyki-koncowe {
+  display: flex;
+  gap: 56px;
+  margin: 8px 0;
+}
+
+.podsumowanie .kolumna-wyniku {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.podsumowanie .kolumna-wyniku .etykieta {
+  font-size: var(--stopien-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kosc-przygaszona);
+}
+
+.podsumowanie .kolumna-wyniku .wartosc {
+  font-size: var(--stopien-xl);
+  font-weight: 700;
+  color: var(--kosc);
+  line-height: 1;
+}
+
+.podsumowanie .kolumna-wyniku .dopisek {
+  font-size: var(--stopien-s);
+  color: var(--kosc-przygaszona);
+}
+
+.podsumowanie .przyciski {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* ---------- Modal ---------- */
+
+.modal-tlo {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: rgba(19, 27, 41, 0.88);
+}
+
+.modal {
+  max-width: 680px;
+  max-height: 80%;
+  overflow-y: auto;
+  background: var(--sukno);
+  border: var(--ramka-mocna);
+  border-radius: var(--promien);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal h2 {
+  font-family: var(--font-tytul);
+  margin: 0;
+  font-size: var(--stopien-xl);
+  font-weight: 400;
+}
+
+.modal .tresc {
+  line-height: 1.6;
+  font-size: var(--stopien-s);
+  color: var(--kosc-cien);
+}
+
+.modal .tresc h3 {
+  font-family: var(--font-tytul);
+  font-size: var(--stopien-m);
+  margin: 16px 0 4px;
+  color: var(--mosiadz-jasny);
+}
+
+.modal .tresc ul {
+  margin: 4px 0;
+  padding-left: 20px;
+}
+
+.modal .tresc li {
+  margin-bottom: 4px;
+}
+
+.modal .tresc strong {
+  color: var(--kosc);
+}
+
+.modal .przyciski {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ---------- Blokada wejścia na czas animacji ---------- */
+
+.zablokowane {
+  pointer-events: none;
+}
+
+/* ---------- Animacje (§10) — wyłącznie 2D (§10.3) ---------- */
+
+@keyframes zeton-wejscie {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zeton-smierc {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+  }
+  30% {
+    filter: brightness(2.2) saturate(0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.7) translateY(14px);
+  }
+}
+
+@keyframes strzalka-rysuj {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes dymek {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-34px);
+  }
+}
+
+@keyframes wpis-wejscie {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes potrzasnij {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes kostka-turla {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.08);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Uderzenie w fazie walki — drgnięcie pola i błysk marzanny (§10.2) */
+@keyframes uderzenie {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-3px, 2px);
+  }
+  40% {
+    transform: translate(3px, -2px);
+  }
+  60% {
+    transform: translate(-2px, -1px);
+  }
+  80% {
+    transform: translate(2px, 1px);
+  }
+}
+
+.pole.uderzone {
+  animation: uderzenie var(--czas-sredni) ease-out;
+}
+
+.pole.uderzone::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--marzanna);
+  opacity: 0;
+  animation: blysk var(--czas-sredni) ease-out;
+  pointer-events: none;
+  border-radius: var(--promien);
+}
+
+@keyframes blysk {
+  0% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "handSize": 7,
+  "handMax": 8,
+  "mulliganFirstTurn": "all",
+  "mulliganLater": 3,
+  "mulliganDiscardForRest": true,
+  "supplyBase": 1,
+  "supplyLimitMode": "turn_plus_base",
+  "supplyModel": "pool",
+  "breakthroughThreshold": 15,
+  "duelTie": "both_live",
+  "duelSupplementsDamage": true,
+  "retaliationSkipUnaffordable": false,
+  "reshuffleDiscard": false,
+  "maxTurns": 40,
+  "turnOrderMode": "fewer_units",
+  "logisticsAlternates": true,
+  "idleResetSeconds": 300,
+  "deckSize": 40
+}

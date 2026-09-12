@@ -1,0 +1,56 @@
+[
+  {
+    "id": "oslona",
+    "name": "Osłona",
+    "symbol": "symbols/oslona.svg",
+    "text": "Sąsiedzi w tym samym rzędzie mają defensywę +1.",
+    "hooks": [
+      "modifyDefense"
+    ]
+  },
+  {
+    "id": "szarza",
+    "name": "Szarża",
+    "symbol": "symbols/szarza.svg",
+    "text": "W turze rozmieszczenia ofensywa +2.",
+    "hooks": [
+      "modifyOffense"
+    ]
+  },
+  {
+    "id": "ostrzal",
+    "name": "Ostrzał",
+    "symbol": "symbols/ostrzal.svg",
+    "text": "Atakuje z tylnej linii i sięga pól tylnych przeciwnika.",
+    "hooks": [
+      "modifyRange"
+    ]
+  },
+  {
+    "id": "niezlomnosc",
+    "name": "Niezłomność",
+    "symbol": "symbols/niezlomnosc.svg",
+    "text": "Pierwsze oznaczenie śmierci w turze zostaje zignorowane.",
+    "hooks": [
+      "onDeath"
+    ]
+  },
+  {
+    "id": "zwiadowca",
+    "name": "Zwiadowca",
+    "symbol": "symbols/zwiadowca.svg",
+    "text": "Raz w turze możesz zmienić rozkaz tego oddziału w fazie manewrów.",
+    "hooks": [
+      "onOrderDeclared"
+    ]
+  },
+  {
+    "id": "zaopatrzeniowiec",
+    "name": "Zaopatrzeniowiec",
+    "symbol": "symbols/zaopatrzeniowiec.svg",
+    "text": "Karty zaopatrzenia zagrane przez właściciela wracają na rękę zamiast na stos odrzuconych.",
+    "hooks": [
+      "onDeploy"
+    ]
+  }
+]

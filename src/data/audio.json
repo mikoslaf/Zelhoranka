@@ -1,0 +1,22 @@
+{
+  "sfx": {
+    "CARD_DRAWN": "audio/sfx/draw.ogg",
+    "CARD_PLAYED": "audio/sfx/play.ogg",
+    "UNIT_DEPLOYED": "audio/sfx/deploy.ogg",
+    "SUPPLY_SPENT": "audio/sfx/coin.ogg",
+    "SUPPLY_GAINED": "audio/sfx/coin.ogg",
+    "DICE_ROLL": "audio/sfx/dice.ogg",
+    "ORDERS_REVEALED": "audio/sfx/reveal.ogg",
+    "COMBAT_START": "audio/sfx/clash.ogg",
+    "UNIT_DIED": "audio/sfx/death.ogg",
+    "PHASE_CHANGED": "audio/sfx/phase.ogg",
+    "ILLEGAL_ACTION": "audio/sfx/deny.ogg",
+    "AMBUSH_TRIGGERED": "audio/sfx/reveal.ogg",
+    "GAME_WON": "audio/sfx/fanfare.ogg",
+    "GAME_LOST": "audio/sfx/defeat.ogg"
+  },
+  "music": {
+    "MENU": "audio/music/menu.ogg",
+    "GAME": "audio/music/game.ogg"
+  }
+}
