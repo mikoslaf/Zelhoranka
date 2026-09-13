@@ -19,6 +19,7 @@ type Props = {
   ustawienia: Ustawienia;
   onZmiana: (u: Ustawienia) => void;
   onStart: () => void;
+  onPoradnik: () => void;
   onZasady: () => void;
   wPartii: boolean;
   onWroc: () => void;
@@ -28,6 +29,7 @@ export function EkranMenu({
   ustawienia,
   onZmiana,
   onStart,
+  onPoradnik,
   onZasady,
   wPartii,
   onWroc,
@@ -74,6 +76,9 @@ export function EkranMenu({
           )}
           <button type="button" className="glowny" onClick={onStart} disabled={!gotowe}>
             {gotowe ? T.menu.nowaGra : `${T.menu.wczytywanie}… ${procent}%`}
+          </button>
+          <button type="button" onClick={onPoradnik}>
+            {T.menu.poradnik}
           </button>
           <button type="button" onClick={onZasady}>
             {T.menu.zasady}

@@ -13,7 +13,8 @@ export const T = {
     nowaGra: 'Nowa gra',
     nowaGraBot: 'Gra z komputerem',
     kontynuuj: 'Wróć do partii',
-    zasady: 'Zasady',
+    zasady: 'Zasady szczegółowe',
+    poradnik: 'Jak grać',
     ziarno: 'Ziarno rozgrywki',
     ziarnoOpis: 'Ta sama wartość daje tę samą rozgrywkę — przydatne na pokazie.',
     losujZiarno: 'Losuj',
@@ -105,6 +106,13 @@ export const T = {
     zostalo: 'Bez rozkazu',
     kostka: 'Rzut o inicjatywę',
     przeciwnikMysli: 'Przeciwnik się zastanawia…',
+  },
+
+  poradnik: {
+    dalej: 'Dalej',
+    wstecz: 'Wstecz',
+    pomin: 'Pomiń',
+    rozumiem: 'Jasne, gramy',
   },
 
   koniec: {

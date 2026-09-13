@@ -71,11 +71,13 @@ zadań rysunkowych. Podmiana oprawy nie wymaga żadnej zmiany w kodzie.
   deterministyczny RNG z ziarnem.
 - **Interfejs** — plansza 4×4 na gracza, ręka, panel z dziennikiem, animacje
   starcia, rzut kostką o inicjatywę, ekrany menu i podsumowania.
+- **Poradnik „Jak grać"** — pięć kroków z rysunkami dla kogoś, kto siada pierwszy raz;
+  osobno od modalu „Zasady szczegółowe", który jest referencją, nie nauką gry.
 - **Hot-seat z pełną informacją** — jawne ręce, naprzemienna jawna deklaracja rozkazów.
 - **Multimedia** — manifest dźwięków, preload z paskiem postępu, placeholdery
   proceduralne dla brakujących grafik.
 - **Przeciwnik komputerowy** — trzy poziomy trudności, działa na publicznym API silnika.
-- **Testy** — 73 testy: zasady, zasięgi, walka, zwycięstwo, determinizm,
+- **Testy** — 74 testy: zasady, zasięgi, walka, zwycięstwo, determinizm,
   naprzemienna deklaracja, wymiana duplikatów, bot, test dymny wszystkich ekranów.
 
 ---

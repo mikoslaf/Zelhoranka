@@ -9,6 +9,7 @@ import { EkranGry } from '../../ui/screens/Gra';
 import { EkranMenu } from '../../ui/screens/Menu';
 import { EkranPodsumowania } from '../../ui/screens/Podsumowanie';
 import { ModalZasad } from '../../ui/components/Zasady';
+import { Poradnik } from '../../ui/screens/Poradnik';
 import { Scena } from '../../ui/screens/Scena';
 
 /**
@@ -82,7 +83,6 @@ function render(state: GameState, element: React.ReactElement): string {
 
 const USTAWIENIA = {
   ziarno: 1,
-  zaslonaPelna: true,
   bot: false,
   trudnosc: 'SREDNI' as const,
 };
@@ -94,12 +94,20 @@ describe('render — ekrany nie wysypują się', () => {
         ustawienia={USTAWIENIA}
         onZmiana={() => undefined}
         onStart={() => undefined}
+        onPoradnik={() => undefined}
         onZasady={() => undefined}
         wPartii={false}
         onWroc={() => undefined}
       />,
     );
     expect(html).toContain('Zelhoranka');
+  });
+
+  it('poradnik — każdy krok renderuje się bez wyjątku', () => {
+    const html = renderToString(<Poradnik onZamknij={() => undefined} />);
+    expect(html).toContain('Po co grasz');
+    // Poradnik ma tłumaczyć, a nie powtarzać spis zasad.
+    expect(html.length).toBeGreaterThan(800);
   });
 
   it('modal zasad', () => {

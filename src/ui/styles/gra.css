@@ -1124,6 +1124,136 @@ button.zagrozenie {
   color: var(--mosiadz-jasny);
 }
 
+/* ---------- Poradnik ---------- */
+
+.poradnik {
+  position: absolute;
+  inset: 0;
+  z-index: 55;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 18px;
+  padding: 36px 72px 32px;
+  background: var(--sukno-mrok);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(236, 228, 208, 0.03) 0 10px,
+    transparent 10px 20px
+  );
+}
+
+.poradnik-naglowek {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: var(--ramka-jasna);
+}
+
+.poradnik-naglowek .licznik-krokow {
+  font-size: var(--stopien-s);
+  color: var(--kosc-przygaszona);
+  letter-spacing: 0.14em;
+}
+
+/* Rysunek po lewej, słowa po prawej — obraz niesie myśl, tekst ją domyka. */
+.poradnik-tresc {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 56px;
+  min-height: 0;
+}
+
+.poradnik-rysunek {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  padding: 28px;
+  border: var(--ramka-jasna);
+  border-radius: var(--promien);
+  background: rgba(19, 27, 41, 0.45);
+  min-height: 0;
+}
+
+.poradnik-slowa h2 {
+  font-family: var(--font-tytul);
+  font-size: var(--stopien-xl);
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--mosiadz-jasny);
+}
+
+.poradnik-slowa p {
+  margin: 0 0 12px;
+  line-height: 1.6;
+  font-size: var(--stopien-m);
+  color: var(--kosc);
+  max-width: 46ch;
+}
+
+.poradnik-slowa p.drobne {
+  font-size: var(--stopien-s);
+  color: var(--kosc-przygaszona);
+  padding-top: 10px;
+  border-top: var(--ramka-jasna);
+}
+
+.poradnik-slowa strong.ofn {
+  color: var(--marzanna-jasna);
+}
+
+.poradnik-slowa strong.def {
+  color: var(--grynszpan-jasny);
+}
+
+.fazy-poradnika {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: var(--stopien-s);
+  color: var(--kosc-cien);
+  line-height: 1.4;
+}
+
+.fazy-poradnika strong {
+  color: var(--kosc);
+}
+
+.poradnik-kropki {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+}
+
+.kropka {
+  width: 11px;
+  height: 11px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--kosc-przygaszona);
+  background: transparent;
+}
+
+.kropka.aktywna {
+  background: var(--mosiadz);
+  border-color: var(--mosiadz-jasny);
+}
+
+.poradnik-przyciski {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.poradnik-przyciski button {
+  min-width: 150px;
+}
+
 /* ---------- Menu ---------- */
 
 .menu {

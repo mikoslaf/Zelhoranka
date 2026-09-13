@@ -11,6 +11,7 @@ import { EkranMenu, type Ustawienia } from './screens/Menu';
 import { EkranPodsumowania } from './screens/Podsumowanie';
 import { EkranKostki } from './components/Kostka';
 import { ModalZasad } from './components/Zasady';
+import { Poradnik } from './screens/Poradnik';
 
 /**
  * Powłoka aplikacji: ekrany, bot, auto-reset po bezczynności.
@@ -34,6 +35,7 @@ export function App({
   const [viewPlayer, setViewPlayer] = useState<PlayerId>('P1');
   const [pokazKostke, setPokazKostke] = useState(false);
   const [zasady, setZasady] = useState(false);
+  const [poradnik, setPoradnik] = useState(false);
   const [wPartii, setWPartii] = useState(false);
   // StrictMode woła efekty dwa razy — bez tej blokady drugi rzut byłby
   // odrzucony jako nielegalny i mignąłby komunikat o błędzie.
@@ -163,6 +165,7 @@ export function App({
           ustawienia={ustawienia}
           onZmiana={onUstawienia}
           onStart={start}
+          onPoradnik={() => setPoradnik(true)}
           onZasady={() => setZasady(true)}
           wPartii={wPartii && game.winner === null && game.phase !== 'SETUP'}
           onWroc={() => setEkran('GRA')}
@@ -185,6 +188,8 @@ export function App({
           onKoniec={() => setPokazKostke(false)}
         />
       )}
+
+      {poradnik && <Poradnik onZamknij={() => setPoradnik(false)} />}
 
       {zasady && <ModalZasad onZamknij={() => setZasady(false)} />}
     </Scena>
