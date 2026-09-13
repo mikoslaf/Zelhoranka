@@ -11,7 +11,7 @@ import type { RuleHooks } from './index';
  * deklaracji ktoś musi zadeklarować się pierwszy.
  */
 export const zwiadowca: RuleHooks = {
-  onOrderDeclared(): boolean {
+  canReorder(): boolean {
     return true;
   },
 };

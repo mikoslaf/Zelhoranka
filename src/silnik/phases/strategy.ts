@@ -30,10 +30,7 @@ export function enterStrategy(state: GameState): Reduced {
   next.revealed = true;
   next.activePlayer = next.firstPlayer;
 
-  for (const p of ['P1', 'P2'] as PlayerId[]) {
-    next.players[p].ordersReady = false;
-    next.orders[p] = [];
-  }
+  for (const p of ['P1', 'P2'] as PlayerId[]) next.orders[p] = [];
 
   next = addLog(next, 'Faza strategii. Rozkazy wydawane na przemian, jawnie.');
   return {
@@ -138,7 +135,6 @@ export function applyConfirmOrders(
   let next = cloneState(state);
   const reszta = bezRozkazu(next, action.player);
   for (const uid of reszta) next.orders[action.player].push({ unit: uid, kind: 'NONE' });
-  next.players[action.player].ordersReady = true;
   next = addLog(next, `Pozostałe oddziały (${reszta.length}) zostają na pozycjach.`, action.player);
 
   oddajGlos(next, action.player);

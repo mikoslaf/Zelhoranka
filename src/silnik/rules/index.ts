@@ -29,8 +29,8 @@ export type RuleHooks = {
   modifyRange?: (state: GameState, unit: Unit, targets: string[]) => string[];
   /** true = jednostka przeżywa to oznaczenie śmierci */
   onDeath?: (state: GameState, unit: Unit) => boolean;
-  /** czy właściciel podgląda rozkaz przeciwnika po deklaracji */
-  onOrderDeclared?: (state: GameState, unit: Unit) => boolean;
+  /** true = oddział może raz w turze skorygować swój rozkaz (zwiadowca) */
+  canReorder?: (state: GameState, unit: Unit) => boolean;
   /** czy zagrana karta zaopatrzenia wraca na rękę zamiast na stos odrzuconych */
   onDeploy?: (state: GameState, unit: Unit) => void;
   /** karta zaopatrzenia wraca na rękę właściciela */

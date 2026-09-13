@@ -12,6 +12,7 @@
     "test:watch": "vitest",
     "validate": "tsx tools/validate-cards.ts",
     "placeholders": "tsx tools/make-placeholders.ts",
+    "docs": "tsx tools/make-docs.ts",
     "pack": "tsx tools/pack.ts"
   },
   "dependencies": {

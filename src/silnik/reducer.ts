@@ -2,6 +2,7 @@ import type { GameAction, GameEvent, GameState, PlayerId, Reduced } from './type
 import { czyAkcjaLegalna } from './actions';
 import { addLog, cloneState } from './state';
 import { rollDie } from './rng';
+import { CONFIG } from './cards';
 import { countUnits } from './stats';
 import { checkVictory } from './victory';
 import {
@@ -163,12 +164,19 @@ function beginNextTurn(state: GameState): GameState {
    */
   const c1 = countUnits(next, 'P1');
   const c2 = countUnits(next, 'P2');
-  const previous = next.firstPlayer;
-  if (c1 !== c2) next.firstPlayer = c1 > c2 ? 'P1' : 'P2';
-  else next.firstPlayer = previous === 'P1' ? 'P2' : 'P1';
+  const poprzedni = next.firstPlayer;
+  const rowneSily = c1 === c2;
 
-  next.logisticsFirstPlayer =
-    next.logisticsFirstPlayer === 'P1' ? 'P2' : 'P1';
+  if (CONFIG.turnOrderMode === 'more_units_first' && !rowneSily) {
+    next.firstPlayer = c1 > c2 ? 'P1' : 'P2';
+  } else {
+    // Remis liczebny albo tryb „alternate": po prostu zamiana stron.
+    next.firstPlayer = poprzedni === 'P1' ? 'P2' : 'P1';
+  }
+
+  if (CONFIG.logisticsAlternates) {
+    next.logisticsFirstPlayer = next.logisticsFirstPlayer === 'P1' ? 'P2' : 'P1';
+  }
 
   return next;
 }

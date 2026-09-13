@@ -132,7 +132,7 @@ export function supplyReturnsToHand(state: GameState, player: PlayerId): boolean
 /** Czy dany oddział jest zwiadowcą (może raz zmienić swój rozkaz). */
 export function isScout(state: GameState, unit: Unit): boolean {
   for (const hook of hooksFor(card(unit.cardId).rules)) {
-    if (hook.onOrderDeclared && hook.onOrderDeclared(state, unit)) return true;
+    if (hook.canReorder && hook.canReorder(state, unit)) return true;
   }
   return false;
 }

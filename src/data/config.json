@@ -13,7 +13,7 @@
   "retaliationSkipUnaffordable": false,
   "reshuffleDiscard": false,
   "maxTurns": 40,
-  "turnOrderMode": "fewer_units",
+  "turnOrderMode": "more_units_first",
   "logisticsAlternates": true,
   "idleResetSeconds": 300,
   "deckSize": 40

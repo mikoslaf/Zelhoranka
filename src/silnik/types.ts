@@ -124,7 +124,6 @@ export type PlayerState = {
   deepMulligansUsed: number;
   passedLogistics: boolean;
   passedManeuvers: boolean;
-  ordersReady: boolean;
   drawDone: boolean;
   /** zwiadowcy, którzy wykorzystali już zmianę rozkazu w tej turze */
   scoutUsed: Uid[];

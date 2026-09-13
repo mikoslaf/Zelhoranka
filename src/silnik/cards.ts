@@ -26,7 +26,7 @@ export type GameConfig = {
   retaliationSkipUnaffordable: boolean;
   reshuffleDiscard: boolean;
   maxTurns: number;
-  turnOrderMode: 'fewer_units' | 'alternate';
+  turnOrderMode: 'more_units_first' | 'alternate';
   logisticsAlternates: boolean;
   idleResetSeconds: number;
   deckSize: number;

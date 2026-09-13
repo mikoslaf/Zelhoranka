@@ -20,7 +20,6 @@ function emptyPlayer(deck: string[], hand: string[]): PlayerState {
     deepMulligansUsed: 0,
     passedLogistics: false,
     passedManeuvers: false,
-    ordersReady: false,
     drawDone: false,
     scoutUsed: [],
     deckExhausted: false,

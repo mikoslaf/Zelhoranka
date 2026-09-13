@@ -34,27 +34,49 @@ z dowolnego podkatalogu.
 | `npm run test:watch` | to samo, w trybie ciągłym |
 | `npm run validate` | walidacja `cards.json` + lista brakujących grafik |
 | `npm run placeholders` | generuje tymczasowe grafiki SVG (nie nadpisuje istniejących) |
+| `npm run docs` | generuje `docs/dokumentacja.pdf` z plików danych projektu |
 | `npm run pack` | archiwum do oddania, bez `node_modules/` i `dist/` |
 
 ---
 
-## Co jest zrobione
+## Stan realizacji
 
-Etapy 1–7 z §15 instrukcji:
+Plan prac z §15 instrukcji ma **8 etapów**. Poniżej stan każdego z nich.
 
-- **Silnik** — wszystkie fazy (dobieranie, logistyka, strategia, manewry, walka),
-  warunki zwycięstwa, rejestr reguł specjalnych, deterministyczny RNG z ziarnem.
+| Etap | Zakres | Stan |
+|---|---|---|
+| 1 | Szkielet Vite + typy + `cards.json` + render planszy | gotowe |
+| 2 | Faza dobierania i logistyki + pula zaopatrzenia | gotowe |
+| 3 | Faza strategii + ekran zasłony (hot-seat) | gotowe, ale **ze świadomym odstępstwem** — zasłony nie ma, patrz „Pełna informacja zamiast tajności" |
+| 4 | Faza walki + warunki zwycięstwa + testy jednostkowe | gotowe |
+| 5 | Manewry, zasadzki, interwencje, rejestr reguł specjalnych | gotowe — 6 reguł startowych działa i ma symbole |
+| 6 | Assety, dźwięk, animacje, kostka inicjatywy | gotowe na grafikach zastępczych; brak docelowych plików `.webp` i `.ogg` |
+| 7 | Ekrany menu i podsumowania, auto-reset, bot | gotowe |
+| 8 | Build produkcyjny, dokumentacja PDF, pakowanie | gotowe |
+
+Kryterium etapu 8 („archiwum bez `node_modules` i `dist`") spełnia `npm run pack`.
+Dokumentacja: [`docs/dokumentacja.pdf`](docs/dokumentacja.pdf), generowana poleceniem
+`npm run docs` **z plików danych projektu**, więc liczby w niej nie rozjeżdżają się
+z grą po zmianie balansu.
+
+### Co pozostaje do zrobienia
+
+Jedno: **właściwe pliki graficzne i dźwiękowe**. Gra jest w pełni grywalna bez nich —
+`npm run validate` wypisuje dokładną listę brakujących plików, która jest zarazem listą
+zadań rysunkowych. Podmiana oprawy nie wymaga żadnej zmiany w kodzie.
+
+### Zakres
+
+- **Silnik** — wszystkie fazy, warunki zwycięstwa, rejestr reguł specjalnych,
+  deterministyczny RNG z ziarnem.
 - **Interfejs** — plansza 4×4 na gracza, ręka, panel z dziennikiem, animacje
-  starcia, rzut kostką o inicjatywę, ekrany menu / zasłony / podsumowania.
+  starcia, rzut kostką o inicjatywę, ekrany menu i podsumowania.
 - **Hot-seat z pełną informacją** — jawne ręce, naprzemienna jawna deklaracja rozkazów.
 - **Multimedia** — manifest dźwięków, preload z paskiem postępu, placeholdery
   proceduralne dla brakujących grafik.
 - **Przeciwnik komputerowy** — trzy poziomy trudności, działa na publicznym API silnika.
-- **Testy** — 70 testów: zasady, zasięgi, walka, zwycięstwo, determinizm, tajność
-  deklaracji, bot, test dymny wszystkich ekranów.
-
-Brakuje wyłącznie **właściwych plików graficznych i dźwiękowych** — gra jest w pełni
-grywalna na placeholderach (patrz niżej).
+- **Testy** — 73 testy: zasady, zasięgi, walka, zwycięstwo, determinizm,
+  naprzemienna deklaracja, wymiana duplikatów, bot, test dymny wszystkich ekranów.
 
 ---
 
