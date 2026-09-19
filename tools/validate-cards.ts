@@ -131,9 +131,7 @@ for (const c of CARDS) {
   if (c.type === 'RECRUIT') sprawdzPlik(`board/tokens/${c.id}.webp`, `żeton: ${c.name}`);
 }
 for (const r of RULES) sprawdzPlik(r.symbol, `symbol reguły: ${r.name}`);
-for (const t of ['recruit', 'supply', 'ambush', 'intervention', 'maneuver']) {
-  sprawdzPlik(`cards/backs/back_${t}.webp`, `rewers typu ${t}`);
-}
+// Rewersy nie są sprawdzane: gra ma jawne ręce, więc nic ich nie wyświetla.
 for (const s of ['main', 'flank', 'rear']) {
   sprawdzPlik(`board/field_${s}.webp`, `pole planszy: ${s}`);
 }

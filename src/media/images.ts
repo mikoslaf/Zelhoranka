@@ -1,5 +1,7 @@
 import type { Card, CardType } from '../silnik/types';
 
+// Rewersów nie ma: od czasu przejścia na jawne ręce nic ich nie wyświetla.
+
 /**
  * Ładowanie grafik i placeholdery (§8.4).
  * Żadna ścieżka do grafiki nie występuje w komponentach — wszystko idzie
@@ -16,10 +18,6 @@ export function assetUrl(path: string): string {
 
 export function cardArtUrl(card: Card): string | null {
   return card.art ? assetUrl(card.art) : null;
-}
-
-export function cardBackUrl(type: CardType): string {
-  return assetUrl(`cards/backs/back_${type.toLowerCase()}.webp`);
 }
 
 export function symbolUrl(symbol: string): string {

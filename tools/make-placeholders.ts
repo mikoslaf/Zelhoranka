@@ -26,7 +26,7 @@ const PALETA: Record<CardType, string> = {
   MANEUVER: '#33455F',
 };
 
-const SUKNO = '#22314A';
+
 const KOSC = '#ECE4D0';
 
 let zapisane = 0;
@@ -95,23 +95,6 @@ for (const c of CARDS) {
 </svg>
 `;
   zapisz(`cards/${c.id}.svg`, svg);
-}
-
-/* ---------- Rewersy: po jednym na typ ---------- */
-
-for (const typ of Object.keys(PALETA) as CardType[]) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="750" height="1050" viewBox="0 0 750 1050">
-  <rect width="750" height="1050" fill="${SUKNO}"/>
-  <rect x="40" y="40" width="670" height="970" fill="none" stroke="${KOSC}"
-        stroke-opacity="0.35" stroke-width="4"/>
-  <circle cx="375" cy="525" r="150" fill="none" stroke="${PALETA[typ]}" stroke-width="10"/>
-  <text x="375" y="545" font-family="serif" font-size="54" fill="${KOSC}"
-        text-anchor="middle">Z</text>
-  <text x="375" y="960" font-family="sans-serif" font-size="24" fill="${KOSC}"
-        fill-opacity="0.5" text-anchor="middle">${typ}</text>
-</svg>
-`;
-  zapisz(`cards/backs/back_${typ.toLowerCase()}.svg`, svg);
 }
 
 /* ---------- Żetony jednostek: 512 × 512, kadr bez tekstu ---------- */
