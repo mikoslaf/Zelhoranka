@@ -121,6 +121,10 @@ Aplikacja szuka po kolei: `.webp` → `.svg` → placeholder proceduralny. Dlate
 wygenerowane zastępniki widać od razu, a wrzucenie właściwego `.webp` o tej samej
 nazwie przesłania je bez żadnej zmiany w kodzie.
 
+Żeton jednostki na planszy ma dłuższy łańcuch: `board/tokens/<id>.webp` → ilustracja
+karty z `cards/<id>.webp` → `board/tokens/<id>.svg`. Osobne grafiki żetonów są więc
+opcjonalne — bez nich zagrana karta pokazuje na polu tę samą ilustrację co w ręce.
+
 Wymiary i pola bezpieczne opisuje §8.2 instrukcji. Najważniejsze:
 
 | Element | Plik | Na ekranie |

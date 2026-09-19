@@ -514,9 +514,23 @@ button.zagrozenie {
   font-size: var(--stopien-xs);
   font-weight: 700;
   line-height: 1.1;
-  padding: 4px 4px 3px;
+  padding: 4px 4px 10px;
   text-align: center;
-  background: rgba(236, 228, 208, 0.93);
+  /*
+   * Zamiast jasnego pasa, który zakrywał górę ilustracji: ciemny gradient
+   * tylko pod napisem i jasny tekst z cieniem. Ilustracje jednostek są
+   * niebieskie, więc kremowy tekst na przyciemnieniu odcina się od każdej.
+   */
+  color: var(--kosc);
+  background: linear-gradient(
+    to bottom,
+    rgba(12, 17, 27, 0.8) 0%,
+    rgba(12, 17, 27, 0.5) 65%,
+    rgba(12, 17, 27, 0) 100%
+  );
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.95),
+    0 0 6px rgba(0, 0, 0, 0.6);
   min-height: 28px;
   display: flex;
   align-items: center;
@@ -538,7 +552,12 @@ button.zagrozenie {
   justify-content: space-between;
   align-items: center;
   padding: 3px 4px;
-  background: rgba(236, 228, 208, 0.93);
+}
+
+/* Bez pasa pod spodem znaczniki statystyk stoją wprost na ilustracji —
+   cień oddziela je od tła. */
+.zeton .stat {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .stat {
@@ -598,8 +617,8 @@ button.zagrozenie {
 }
 
 .znacznik-rozkazu.NONE {
-  background: rgba(23, 28, 38, 0.3);
-  color: var(--inkaust);
+  background: rgba(12, 17, 27, 0.65);
+  color: var(--kosc);
 }
 
 /* ---------- Strzałki ataków ---------- */
@@ -884,6 +903,7 @@ button.zagrozenie {
   height: 16px;
   color: var(--inkaust);
   background-color: rgba(236, 228, 208, 0.9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   font-size: 9px;
 }
 

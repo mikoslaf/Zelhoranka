@@ -3,7 +3,7 @@ import type { FieldId, GameState, Order, Unit } from '../../silnik/types';
 import { card } from '../../silnik/cards';
 import { zoneOf } from '../../silnik/board';
 import { baseDefense, baseOffense, effDefense, effOffense } from '../../silnik/stats';
-import { assetUrl } from '../../media/images';
+import { assetUrl, cardArtUrl } from '../../media/images';
 import { useObrazek } from '../../media/useObrazek';
 import { T } from '../teksty';
 import { SymbolReguly } from './Symbol';
@@ -94,7 +94,15 @@ function Zeton({
   moje: boolean;
 }) {
   const def = card(unit.cardId);
-  const grafika = useObrazek(assetUrl(`board/tokens/${unit.cardId}.webp`));
+  // Żeton bez własnej grafiki pokazuje ilustrację karty — jest kwadratowa
+  // jak pole, więc nie trzeba jej przycinać. Placeholder żetonu zostaje
+  // na sam koniec, a plik `board/tokens/<id>.webp` nadal ma pierwszeństwo.
+  const ilustracja = cardArtUrl(def);
+  const grafika = useObrazek([
+    assetUrl(`board/tokens/${unit.cardId}.webp`),
+    ...(ilustracja ? [ilustracja] : []),
+    assetUrl(`board/tokens/${unit.cardId}.svg`),
+  ]);
 
   // Statystyki zawsze przez funkcje efektywne — nigdy wprost z karty (§4.3).
   const ofn = effOffense(state, unit);
